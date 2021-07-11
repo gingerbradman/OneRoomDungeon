@@ -6,6 +6,7 @@ public class Fireball_script : MonoBehaviour, IPooledObject
 {
     public float speed;
     public Rigidbody2D rigidbody2D;
+    public int damage;
     // Start is called before the first frame update
     public void OnObjectSpawn()
     {
@@ -14,8 +15,15 @@ public class Fireball_script : MonoBehaviour, IPooledObject
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.layer == 8)
+        if(other.gameObject.layer == 8) //Wall collision
         {
+            this.gameObject.SetActive(false);
+        }
+
+        if(other.gameObject.layer == 11) //Enemy Collision
+        {
+            Enemy_script e = other.gameObject.GetComponent<Enemy_script>();
+            e.TakeDamage(damage);
             this.gameObject.SetActive(false);
         }
     }

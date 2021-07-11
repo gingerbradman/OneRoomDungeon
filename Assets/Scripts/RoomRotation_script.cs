@@ -8,6 +8,8 @@ public class RoomRotation_script : MonoBehaviour
     public GameObject room;
     int rotationSpeed = 5;
     float RotationTimer;
+
+    public bool GetIsRotating(){return isRotating;}
     [SerializeField] bool isRotating = false;
     [SerializeField] bool isCounting = false;
     [SerializeField] float currentRotation;
@@ -19,6 +21,8 @@ public class RoomRotation_script : MonoBehaviour
 
     void Start()
     {
+        timer_text = GameObject.Find("RotateCounter").GetComponent<TextMeshProUGUI>();
+        direction_text = GameObject.Find("DirectionText").GetComponent<TextMeshProUGUI>();
         rotationDirection = Random.Range(0,2); //Gives a random number of 0 or 1. 0 will mean left and 1 will mean right
         currentRotation = this.transform.rotation.eulerAngles.z;
         RotationTimer = 10;
@@ -42,6 +46,17 @@ public class RoomRotation_script : MonoBehaviour
             isCounting = false;
             RotationTimer = 10;
             rotateRoomCoroutine = StartCoroutine(RotateRoomCoroutine(CalculateRotation()));
+        }
+    }
+
+    public void StartRotation(float direction)
+    {
+        if (!isRotating)
+        {
+            StopCoroutine(rotationCounterCoroutine);
+            isCounting = false;
+            RotationTimer = 10;
+            rotateRoomCoroutine = StartCoroutine(RotateRoomCoroutine(CalculateRotation(direction)));
         }
     }
 
@@ -74,7 +89,6 @@ public class RoomRotation_script : MonoBehaviour
         while (IsBetween(this.transform.rotation.eulerAngles.z, (float)(angle + 0.001), (float)(angle - 0.001)) == false)
         {
             this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.Euler(0, 0, angle), rotationSpeed * Time.deltaTime);
-            Debug.Log(this.transform.rotation.eulerAngles.z);
             yield return null;
         }
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.Euler(0, 0, angle), rotationSpeed * Time.deltaTime);
@@ -94,7 +108,7 @@ public class RoomRotation_script : MonoBehaviour
     void ResetIsRotating()
     {
         isRotating = false;
-        StopCoroutine(rotateRoomCoroutine);
+        //StopCoroutine(rotateRoomCoroutine);
     }
 
     float CalculateRotation()
@@ -105,16 +119,12 @@ public class RoomRotation_script : MonoBehaviour
             {
                 case 0:
                     return 270;
-                    break;
                 case 90:
                     return 0;
-                    break;
                 case 180:
                     return 90;
-                    break;
                 case 270:
                     return 180;
-                    break;
             }
         }
         else if (rotationDirection == 1)
@@ -123,16 +133,45 @@ public class RoomRotation_script : MonoBehaviour
             {
                 case 0:
                     return 90;
-                    break;
                 case 90:
                     return 180;
-                    break;
                 case 180:
                     return 270;
-                    break;
                 case 270:
                     return 0;
-                    break;
+            }
+        }
+        return 0;
+    }
+
+    float CalculateRotation(float direction)
+    {
+        if(direction == 0)
+        {
+            switch (currentRotation)
+            {
+                case 0:
+                    return 270;
+                case 90:
+                    return 0;
+                case 180:
+                    return 90;
+                case 270:
+                    return 180;
+            }
+        }
+        else if (direction == 1)
+        {
+            switch (currentRotation)
+            {
+                case 0:
+                    return 90;
+                case 90:
+                    return 180;
+                case 180:
+                    return 270;
+                case 270:
+                    return 0;
             }
         }
         return 0;

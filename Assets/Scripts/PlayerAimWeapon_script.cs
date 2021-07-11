@@ -9,17 +9,16 @@ public class PlayerAimWeapon_script : MonoBehaviour
 
     private ObjectPooler_script objectPooler;
 
-    private void Awake()
+    private void Start()
     {
         aimTransform = transform.Find("Aim");
-        aimCursorTransform = transform.Find("Aim");
+        aimCursorTransform = aimTransform.Find("aimSprite");
         objectPooler = ObjectPooler_script.Instance;
     }
 
     private void Update()
     {
         HandleAiming();
-        HandleShooting();
     }
 
     private void HandleAiming()
@@ -33,11 +32,8 @@ public class PlayerAimWeapon_script : MonoBehaviour
         aimTransform.eulerAngles = new Vector3(0, 0, angle);  
     }
 
-    private void HandleShooting()
+    public void HandleShooting()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            objectPooler.SpawnFromPool("Fireball", aimCursorTransform.position, aimCursorTransform.rotation);
-        }
+        objectPooler.SpawnFromPool("Fireball", aimCursorTransform.position, aimCursorTransform.rotation);
     }
 }
