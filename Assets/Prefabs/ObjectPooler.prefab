@@ -50,3 +50,6 @@ MonoBehaviour:
   - tag: Arrow
     prefab: {fileID: 1892180457684238747, guid: dc734223462004a48ad0074bc4b7ed9f, type: 3}
     size: 6
+  - tag: Bone
+    prefab: {fileID: 7415453903580379758, guid: 866973c47fbf89443af7cc8d94edd535, type: 3}
+    size: 3

@@ -44,3 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NextScene: 0
+  tombStone: {fileID: 21300000, guid: 6070a8ab3191b344191c37d1aa3d8d0a, type: 3}
+  enemiesLeftList: []
+  enemiesLeftArray: []
+  enemiesLeftInt: 0

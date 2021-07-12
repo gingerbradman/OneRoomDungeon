@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement_script : MonoBehaviour
 {
-    public float speed = 100;
+    private float speed;
+    public void SetSpeed(int x) {speed = x;}
     public Transform obj;
     SpriteRenderer spriteRenderer;
     GameObject spriteObject;

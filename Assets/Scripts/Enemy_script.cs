@@ -12,6 +12,8 @@ public class Enemy_script : MonoBehaviour
     public int startingHealth;
     int currentHealth;
     GameManager_script gameManager_Script;
+    AudioSource hurtSFX;
+    AudioSource explodeSFX;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,9 @@ public class Enemy_script : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         matWhite = new Color(255,255,255);
         matDefault = spriteRenderer.material.color;
+        GameObject sfxManager = GameObject.Find("SFX Manager").gameObject;
+        hurtSFX = sfxManager.transform.Find("hurtSFX").GetComponent<AudioSource>();
+        explodeSFX = sfxManager.transform.Find("explodeSFX").GetComponent<AudioSource>();
         explosionRef = Resources.Load("Explosion");
         currentHealth = startingHealth;    
     }
@@ -35,10 +40,12 @@ public class Enemy_script : MonoBehaviour
         spriteRenderer.material.color = matWhite;
         if(currentHealth <= 0)
         {
+            explodeSFX.Play();
             Die();
         }
         else
         {
+            hurtSFX.Play();
             Invoke("ResetMaterial", .1f);
         }
     }

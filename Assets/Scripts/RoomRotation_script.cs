@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class RoomRotation_script : MonoBehaviour
 {
     public GameObject room;
-    int rotationSpeed = 5;
+    int rotationSpeed = 10;
     float RotationTimer;
 
     public bool GetIsRotating(){return isRotating;}
@@ -14,15 +15,17 @@ public class RoomRotation_script : MonoBehaviour
     [SerializeField] bool isCounting = false;
     [SerializeField] float currentRotation;
     [SerializeField] int rotationDirection;
+    Image rotationRenderer;
+    public Sprite leftTurnSprite;
+    public Sprite rightTurnSprite;
     Coroutine rotationCounterCoroutine;
     Coroutine rotateRoomCoroutine;
     public TMP_Text timer_text;
-    public TMP_Text direction_text;
 
     void Start()
     {
+        rotationRenderer = GameObject.Find("Canvas").transform.Find("RotationImage").GetComponent<Image>();
         timer_text = GameObject.Find("RotateCounter").GetComponent<TextMeshProUGUI>();
-        direction_text = GameObject.Find("DirectionText").GetComponent<TextMeshProUGUI>();
         rotationDirection = Random.Range(0,2); //Gives a random number of 0 or 1. 0 will mean left and 1 will mean right
         currentRotation = this.transform.rotation.eulerAngles.z;
         RotationTimer = 10;
@@ -33,7 +36,17 @@ public class RoomRotation_script : MonoBehaviour
     private void Update()
     {
         timer_text.text = "Rotate in: " + (int)RotationTimer;
-        direction_text.text = DirectionDetermination();
+        string nextRotationDirection = DirectionDetermination();
+        
+        if(nextRotationDirection == "Left")
+        {
+            rotationRenderer.sprite = leftTurnSprite;
+        }
+        else
+        {
+            rotationRenderer.sprite = rightTurnSprite;
+        }
+
         StartRotation();
         CheckRotation();
     }

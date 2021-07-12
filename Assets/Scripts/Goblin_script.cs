@@ -8,14 +8,16 @@ public class Goblin_script : MonoBehaviour
     public int speed;
     int currentSpeed;
     bool canFire = false;
-    int fireRate = 5;
+    public int fireRate;
     SpriteRenderer renderer;
     Rigidbody2D rigidbody2D;
-    public int randAttack = 1;
+    int randAttack;
     int randDirection;
     Direction facingDirection;
     public enum Direction {Left , Right};
 
+    GameObject target;
+    private Transform aimTransform;
     Color baseColor;
     Color attackRed = new Color(255,0,0);
 
@@ -26,6 +28,8 @@ public class Goblin_script : MonoBehaviour
     {
         objectPooler = ObjectPooler_script.Instance;
         currentSpeed = speed;
+        target = GameObject.FindGameObjectWithTag("Player").gameObject;
+        aimTransform = this.transform.Find("goblinAim");
         renderer = this.GetComponent<SpriteRenderer>();
         baseColor = renderer.color;
         rigidbody2D = this.GetComponent<Rigidbody2D>();
@@ -101,7 +105,7 @@ public class Goblin_script : MonoBehaviour
 
         Invoke("FireArrow", 1f);
 
-        Invoke("enableFire", 5f);
+        Invoke("enableFire", 3f);
     }
 
     void ResetColor()
@@ -116,7 +120,15 @@ public class Goblin_script : MonoBehaviour
 
     void FireArrow()
     {
-        objectPooler.SpawnFromPool("Arrow", this.transform.position, Quaternion.identity);
+        Vector3 vec = target.transform.position;
+        vec.z = 0f;
+        Vector3 targetPosition = vec;
+
+        Vector3 aimDirection = (targetPosition - transform.position).normalized;
+        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg; 
+        aimTransform.eulerAngles = new Vector3(0, 0, angle); 
+
+        objectPooler.SpawnFromPool("Arrow", aimTransform.position, aimTransform.rotation);
     }
 
     void enableFire()
@@ -130,7 +142,7 @@ public class Goblin_script : MonoBehaviour
         while(true){
             while(canFire)
             {
-                randAttack = Random.Range(0,3);
+                randAttack = Random.Range(0,2);
                 if(randAttack == 0)
                 {
                     canFire = false;

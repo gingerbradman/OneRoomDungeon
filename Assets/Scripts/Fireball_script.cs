@@ -6,10 +6,16 @@ public class Fireball_script : MonoBehaviour, IPooledObject
 {
     public float speed;
     public Rigidbody2D rigidbody2D;
-    public int damage;
+    PlayerController_script player;
+
+    private int damage;
+    public void SetDamage(int x){ damage = x;}
     // Start is called before the first frame update
+
     public void OnObjectSpawn()
     {
+        player = GameObject.Find("Player").GetComponent<PlayerController_script>(); 
+        damage = player.fireBallDamage;
         rigidbody2D.velocity = transform.right * speed;
     }
 

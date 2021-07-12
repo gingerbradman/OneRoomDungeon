@@ -9,8 +9,7 @@ public class PlayerCollider_script : MonoBehaviour
     {
         if(other.gameObject.layer == 11)
         {
-            Destroy(other.gameObject);
-            Destroy(this.gameObject);
+            this.gameObject.GetComponent<PlayerController_script>().Die();
         }
     }
 
