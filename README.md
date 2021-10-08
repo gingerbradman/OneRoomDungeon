@@ -1,5 +1,7 @@
 # OneRoomDungeon
 
+![alt text](https://github.com/gingerbradman/OneRoomDungeon/blob/main/Assets/Sprites/background.png?raw=true)
+
 # Introduction
 
 Hello! My name is Gingerbrad and this is my entry for the 2021 July IndieTales Game Jam!
